@@ -39,6 +39,9 @@ class Logging(logging.Logger):
         stream_handler.setLevel(level)
         self.addHandler(stream_handler)
 
+    def echo(self, msg, *args, **kwargs):
+        self._log(70, "{}".format(str(msg)), args, **kwargs)
+
     def debug(self, msg, *args, **kwargs):
         """ 调试输出 """
 

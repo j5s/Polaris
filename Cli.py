@@ -34,7 +34,7 @@ def show_banner(func):
     def wrapper(options, processors):
         os.system('')
         print(f"""
-    \033[0;31mPolaris - 渗透测试框架 1.0.0\033[0m
+    \033[0;31mPolaris - 渗透测试框架 1.0.1\033[0m
 
  =# Author: 浮鱼
  =# Github: https://github.com/doimet/Polaris
@@ -66,7 +66,7 @@ def parse_input_param(ctx, param, value):
     """ 解析输入参数 """
     if not value:
         return
-    match = re.match(rf"([a-zA-Z]+)[=|: ]([\w\S]+)", value)
+    match = re.match(rf"^([a-zA-Z]+)[=|: ]([\w\S]+)$", value)
     if match:
         task_list, key, value = [], match.group(1), match.group(2)
         if os.path.isfile(value):
@@ -75,9 +75,10 @@ def parse_input_param(ctx, param, value):
         else:
             value_list = [value]
         for value in value_list:
-            match = re.match(rf"([a-zA-Z]+)[=|: ]([\w\S]+)", value)
-            if match:
-                key, value = match.group(1), match.group(2)
+            # match = re.match(rf"^([a-zA-Z]+)[=|: ]([\w\S:]+)$", value)
+            # if match:
+            #     print(match.group(1), match.group(2))
+            #     key, value = match.group(1), match.group(2)
             if key == 'ip':
                 ip_list = IP(value, make_net=True)
                 for ip in ip_list:

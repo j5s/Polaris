@@ -247,9 +247,12 @@ class Application:
                 call_func_name = target_tuple[0]
 
             """ 屏蔽插件内输出 """
-            sys.stdout = open(os.devnull, 'w')
-            data = getattr(obj, call_func_name)()
-            sys.stdout = sys.__stdout__
+            if call_func_name != 'shell':
+                sys.stdout = open(os.devnull, 'w')
+                data = getattr(obj, call_func_name)()
+                sys.stdout = sys.__stdout__
+            else:
+                data = getattr(obj, call_func_name)()
 
             # 恢复消息线程
             self.event.set()
@@ -342,7 +345,7 @@ class Application:
                 if type(class_attr_obj).__name__ == 'function':
                     reg_dict[method_name] = class_attr_obj
                 elif type(class_attr_obj).__name__ == 'type':
-                    reg_dict[method_name] = class_attr_obj()
+                    reg_dict[method_name.lower()] = class_attr_obj()
 
         plugin_object = PluginObject(reg_dict)
         return plugin_object
